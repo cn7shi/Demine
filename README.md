@@ -78,7 +78,7 @@ npm run test:browser
 
 浏览器测试在 Windows 默认使用已安装的 Edge；Linux 使用 Playwright Chromium，需要先运行 `npx playwright install --with-deps chromium`。测试使用人工构造的本地记录，不访问真实 Codex 会话。
 
-仓库已添加 Windows / Linux Rust 检查及 Linux 浏览器测试的 GitHub Actions 配置；云端结果需要推送后验证。
+当前工作已提交到 [草稿 PR #1](https://github.com/cn7shi/Demine/pull/1)，包含 Windows / Linux Rust 检查和 Linux 浏览器测试。首次云端检查发现的 Windows 路径问题、修复与验证结果记录在 [测试记录](docs/testing.md)。
 
 ## 项目约定
 

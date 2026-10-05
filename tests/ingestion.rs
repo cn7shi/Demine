@@ -138,6 +138,42 @@ fn source_is_read_only_and_foreign_projects_are_excluded() {
 }
 
 #[test]
+fn missing_descendant_keeps_canonical_project_boundary() {
+    let f = Fixture::new();
+    let separate_project = f._root.path().join("separate-project");
+    fs::create_dir(&separate_project).unwrap();
+    let alias = separate_project.join("project-alias");
+    // A junction needs no developer-mode/symlink privilege on Windows runners.
+    #[cfg(windows)]
+    {
+        let output = std::process::Command::new("cmd")
+            .args(["/C", "mklink", "/J"])
+            .arg(&alias)
+            .arg(&f.project)
+            .output()
+            .unwrap();
+        assert!(output.status.success(), "junction creation: {output:?}");
+    }
+    #[cfg(unix)]
+    std::os::unix::fs::symlink(&f.project, &alias).unwrap();
+
+    let missing = alias.join("removed").join("src");
+    assert!(!missing.exists());
+    assert!(belongs_to_project(&f.project, &missing));
+    assert_eq!(
+        normalized_path(&missing),
+        normalized_path(&f.project.join("removed").join("src"))
+    );
+    assert!(!belongs_to_project(
+        &f.project,
+        &alias.join("..").join("outside").join("src")
+    ));
+    // A path lexically inside the alias's parent must not enter that parent's
+    // scope if its existing alias actually resolves to another project.
+    assert!(!belongs_to_project(&separate_project, &missing));
+}
+
+#[test]
 fn interleaved_sessions_keep_their_own_cursors() {
     let f = Fixture::new();
     f.user("u1", "first");

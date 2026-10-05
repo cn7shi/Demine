@@ -94,9 +94,17 @@ if ($previewProcess -and $previewProcess.Path -eq $expectedPreview) {
 
 PID 可能在进程退出后被系统复用，因此先核对路径；正常前台启动仍使用 `Ctrl+C` 停止。修改程序并重新编译前，也需停止此预览，避免 Windows 锁定可执行文件。
 
+## PR #1 云端检查与路径回归
+
+基线 `ce274e8` 的 [首次 PR 检查](https://github.com/cn7shi/Demine/actions/runs/37312111363)：Linux Rust 与 Chromium 浏览器任务成功，Windows Rust 在 `interleaved_sessions_keep_their_own_cursors` 失败，预期 2 个会话但只导入 1 个。
+
+旧实现对存在的项目根调用完整路径规范化，对缺失的子目录却回退为原始路径文本；两者包含不同路径别名时会漏采。本地通过 Windows 目录联接和缺失子目录复现：新增 `missing_descendant_keeps_canonical_project_boundary` 在旧实现上失败。修复后从最深的可访问祖先恢复路径身份；该测试也确认父目录越界及其他项目的别名不会混入。Linux 使用符号链接覆盖同样条件，不需要额外依赖。
+
+修复后的本地 Windows 检查：`cargo fmt --check`、`cargo clippy --locked --all-targets -- -D warnings`、`cargo test --locked`、`cargo build --locked` 全部通过；测试总数为 **27 项**（22 项采集/存储 + 4 项 HTTP + 1 项 CLI）。原有多会话用例继续通过。前端未修改；修复后的云端检查结果待本批提交推送后补录。
+
 ## 尚未验证
 
-- GitHub Actions 只完成配置，未推送执行；Linux、其他浏览器及其他 Codex 版本未完成实测。
+- Linux 已完成合成案例与 Chromium 浏览器检查，尚未验证该平台真实 Codex 会话；其他浏览器及其他 Codex 版本未完成实测。
 - 未执行随机进程崩溃/断电注入；检查点原子性基于 SQLite 事务，不能将重启测试称为完整崩溃恢复测试。
 - 未做大规模历史目录、超大单行、长期运行、并发多进程、文件迁移与磁盘耗尽压测。
 - 没有评估 AI 经验提取质量，因为该功能尚未实现。

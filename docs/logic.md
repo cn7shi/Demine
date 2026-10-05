@@ -1,6 +1,6 @@
 # M0 / M1 关键逻辑说明
 
-核对日期：2026-10-05。对应代码基线 `b3ff2ac`，数据库模式为 2。本文解释已经存在的行为；产品范围见 [实现记录](implementation.md)，取舍见 [决策记录](decisions.md)。
+核对日期：2026-10-05。基于代码基线 `b3ff2ac`，包含 PR #1 的路径修复，数据库模式为 2。本文解释已经存在的行为；产品范围见 [实现记录](implementation.md)，取舍见 [决策记录](decisions.md)。
 
 ## 1. 从启动到界面
 
@@ -30,7 +30,7 @@ flowchart TD
 
 发现 `.jsonl` 文件后，先读会话头中的工作目录，再决定是否导入正文。目录必须是绝对路径，并且等于指定项目或位于其真正的子目录内。比较使用路径分隔符边界：选择 `/work/demo` 时，不会把 `/work/demo-other` 当成子目录。Windows 路径比较统一大小写与分隔符。
 
-来源目录扫描不跟随符号链接。路径可访问时优先使用规范路径；不可访问时使用词法规范化，以支持来源中已经被删除的历史工作目录。会话头损坏或缺少项目归属时不导入正文，而是报告错误。
+来源目录扫描不跟随符号链接。项目归属比较先规范化完整路径；完整路径不可访问时，向上找到最深的可规范化祖先，解析该祖先的链接或路径别名，再拼回缺失后缀并处理 `.`、`..`。如果连祖先也无法规范化，才使用原路径的词法规范化。这样支持已删除的历史工作目录，同时保留现存祖先指向其他项目时的隔离边界（ADR-011）；不能推断已经被删除的链接曾指向哪里。会话头损坏或缺少项目归属时不导入正文，而是报告错误。
 
 数据库另存项目绑定，避免两次启动误把不同项目写进同一个数据目录。项目校验不等于账号授权；这是单用户本地工具。
 
@@ -109,7 +109,7 @@ flowchart TD
 | 核心约束 | 决策 | 已有验证入口 |
 | --- | --- | --- |
 | 重启不重复、半行等待 | ADR-004 | [ingestion.rs](../tests/ingestion.rs)：`restart_and_repeated_scan_are_idempotent`、`half_line_waits_and_unicode_survives_resume` |
-| 只采集所选项目 | ADR-002 | [ingestion.rs](../tests/ingestion.rs)：`source_is_read_only_and_foreign_projects_are_excluded` |
+| 只采集所选项目，包括带路径别名的缺失子目录 | ADR-002、011 | [ingestion.rs](../tests/ingestion.rs)：`source_is_read_only_and_foreign_projects_are_excluded`、`missing_descendant_keeps_canonical_project_boundary` |
 | 重写保留旧代次 | ADR-004 | [ingestion.rs](../tests/ingestion.rs)：`same_length_rewrite_starts_a_new_generation_without_erasing_history` |
 | 重复表示与重复尝试分开 | ADR-003、006 | [ingestion.rs](../tests/ingestion.rs)：`identical_commands_with_different_ids_are_distinct_attempts`、`mixed_versions_and_repeated_user_inputs_are_not_silently_hidden` |
 | 压缩内部字段过滤及旧库迁移 | ADR-008 | [ingestion.rs](../tests/ingestion.rs)：`compaction_keeps_only_a_marker_and_never_copies_opaque_internal_content`、`opening_v1_database_sanitizes_existing_compaction_without_losing_progress` |

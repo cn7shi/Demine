@@ -30,10 +30,18 @@ pub struct Collector {
 }
 
 /// Path-component matching prevents `project-other` from entering `project`.
-/// Canonicalization resolves the selected root; lexical fallback supports removed
-/// source directories while still retaining an explicit project boundary.
+/// Resolve the deepest accessible ancestor before normalizing a missing suffix.
+/// Historical working directories may no longer exist; their existing ancestors
+/// can still use symlinks, junctions or Windows short names for the same project.
 pub fn normalized_path(path: &Path) -> String {
-    let owned = path.canonicalize().unwrap_or_else(|_| path.to_owned());
+    let owned = path
+        .ancestors()
+        .find_map(|ancestor| {
+            let canonical = ancestor.canonicalize().ok()?;
+            let suffix = path.strip_prefix(ancestor).ok()?;
+            Some(canonical.join(suffix))
+        })
+        .unwrap_or_else(|| path.to_owned());
     let mut path = owned.to_string_lossy().replace('\\', "/");
     if let Some(rest) = path.strip_prefix("//?/") {
         path = rest.to_owned();

@@ -19,7 +19,7 @@
 
 源码注释解释局部约束，关键逻辑文档解释跨模块行为，决策记录解释取舍。真实私人对话与执行日志保存在 Git 忽略的本地目录，不直接复制进工程档案。
 
-2026-10-05 已创建本地基线提交 `b3ff2ac7604c31dc0cc364daf147fc14b333a8a5`，包含 M0/M1 实现、审查修复、测试与工程档案。尚未推送或发布。文档落盘、本地 Git 快照与远端备份是不同的留档层次；提交对应关系见 [开发履历](development-log.md)。
+2026-10-05 已将基线提交 `b3ff2ac7604c31dc0cc364daf147fc14b333a8a5` 与文档提交 `ce274e8` 推送到 `feat/local-evidence-timeline`，并创建 [草稿 PR #1](https://github.com/cn7shi/Demine/pull/1)，尚未合并或发布。首次云端检查暴露的 Windows 路径问题及修复也纳入留档；提交对应关系见 [开发履历](development-log.md)，实测状态见 [测试记录](testing.md)。
 
 ## 维护方式
 

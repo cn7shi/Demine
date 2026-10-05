@@ -73,7 +73,7 @@ SQLite 使用 WAL；每个数据库绑定一个规范化项目路径。`sessions
 
 已验证 Windows 上的 Codex `0.160.0` 本地桌面会话，以及人工构造的兼容性与故障样例；详情见 [测试记录](testing.md)。本轮真实样本中 `ImageView` 和原生 `ContextCompaction` 仍按未知记录保留，未自动解释其内容。已完成一轮 [OCR 委托自查](ocr-review.md)，确认的 5 项缺陷均已修复并增加回归测试。
 
-已配置 Windows/Linux CI，但未推送运行，不能宣称 Linux 兼容性已完成实测。
+已推送并建立 [草稿 PR #1](https://github.com/cn7shi/Demine/pull/1)。首次云端 Linux Rust 与 Chromium 浏览器检查通过，Windows 暴露了缺失历史子目录的路径归属问题；已修复并补回归，本地 27 项 Rust 测试通过，修复后的云端结果见 [测试记录](testing.md)。Linux 覆盖人工构造案例，尚无该平台真实 Codex 会话接入证据。
 
 当前限制：
 
@@ -92,4 +92,4 @@ SQLite 使用 WAL；每个数据库绑定一个规范化项目路径。`sessions
 3. 加入可纠错的经验条目和独立个人笔记；重新分析不覆盖人的内容。
 4. 在采集可靠的基础上增加 MCP 查询与打开界面的入口。
 
-本轮未实现 AI 经验归纳、笔记、知识库、MCP 或安装包。当前实现、修复与档案已保存到本地基线提交 `b3ff2ac`，尚未推送或发布；提交记录见 [开发履历](development-log.md)。
+本轮未实现 AI 经验归纳、笔记、知识库、MCP 或安装包。当前实现、修复与档案通过功能分支和草稿 PR 留档，尚未合并或发布；提交记录见 [开发履历](development-log.md)。
