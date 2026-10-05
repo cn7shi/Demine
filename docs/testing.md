@@ -100,7 +100,17 @@ PID 可能在进程退出后被系统复用，因此先核对路径；正常前�
 
 旧实现对存在的项目根调用完整路径规范化，对缺失的子目录却回退为原始路径文本；两者包含不同路径别名时会漏采。本地通过 Windows 目录联接和缺失子目录复现：新增 `missing_descendant_keeps_canonical_project_boundary` 在旧实现上失败。修复后从最深的可访问祖先恢复路径身份；该测试也确认父目录越界及其他项目的别名不会混入。Linux 使用符号链接覆盖同样条件，不需要额外依赖。
 
-修复后的本地 Windows 检查：`cargo fmt --check`、`cargo clippy --locked --all-targets -- -D warnings`、`cargo test --locked`、`cargo build --locked` 全部通过；测试总数为 **27 项**（22 项采集/存储 + 4 项 HTTP + 1 项 CLI）。原有多会话用例继续通过。前端未修改；修复后的云端检查结果待本批提交推送后补录。
+修复后的本地 Windows 检查：`cargo fmt --check`、`cargo clippy --locked --all-targets -- -D warnings`、`cargo test --locked`、`cargo build --locked` 全部通过；测试总数为 **27 项**（22 项采集/存储 + 4 项 HTTP + 1 项 CLI）。原有多会话用例继续通过。
+
+修复提交 `6a72ae27a7cfa4fecb64702b4b8a150f0379e327` 的 [云端复验 37312761864](https://github.com/cn7shi/Demine/actions/runs/37312761864) 全部成功：
+
+| 任务 | 实际结果 |
+| --- | --- |
+| Windows Rust | 格式、Clippy、27 项测试通过，含最初失败的多会话用例与新增路径回归 |
+| Linux Rust | 格式、Clippy、27 项测试通过，路径回归使用符号链接 |
+| Linux Chromium | 前端格式、类型、构建、生成 JavaScript 一致性、Rust 构建及 6 项浏览器测试通过 |
+
+云端使用 Rust 1.99.0；Windows 采用目录联接构造路径别名，无需开发者模式。上述结果对应注明的代码提交，后续纯留档提交的状态以 PR 检查页为准。本地预览恢复后，状态接口确认 4 个匹配来源、无扫描错误；这是新的观测值，不替代上面的历史计数。
 
 ## 尚未验证
 

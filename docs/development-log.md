@@ -71,7 +71,7 @@
 
 ## DEV-005 · 远端草稿 PR 与跨平台路径修复
 
-日期：2026-10-05。状态：基线与留档提交已推送至 `feat/local-evidence-timeline`，[草稿 PR #1](https://github.com/cn7shi/Demine/pull/1) 已创建；本批修复提交号在后续留档中回填，未合并或发布。
+日期：2026-10-05。状态：基线与留档提交已推送至 `feat/local-evidence-timeline`，[草稿 PR #1](https://github.com/cn7shi/Demine/pull/1) 已创建；路径修复提交为 `6a72ae27a7cfa4fecb64702b4b8a150f0379e327`，未合并或发布。
 
 **用户要求**：继续此前提出的功能分支推送、草稿 PR 和云端检查。
 
@@ -82,6 +82,10 @@
 **代码与原因**：`src/collector.rs` 改为解析最深的可访问祖先，再规范化缺失后缀；`tests/ingestion.rs` 验证别名、缺失目录和跨项目边界。没有通过创建本应缺失的测试目录绕开问题。取舍见 ADR-011，运行逻辑同步更新于 [关键逻辑](logic.md)。
 
 **本地验证**：Rust 格式检查、Clippy、27 项测试（22 项采集/存储、4 项 HTTP、1 项 CLI）与构建全部通过。前端未修改，最新云端结果另见 [测试记录](testing.md)。
+
+**云端复验**：修复提交对应的 [运行 37312761864](https://github.com/cn7shi/Demine/actions/runs/37312761864) 全部成功：Windows/Linux 各 27 项 Rust 测试通过，Linux Chromium 6 项浏览器测试通过；格式、静态检查、类型检查与构建产物一致性检查通过。本轮恢复了本地预览，状态接口确认采集正常且无扫描错误。
+
+**交付边界**：PR 保持草稿，尚无独立审查，也未合并、发布安装包或设置持续监控；下一阶段仍按路线进入 M2。
 
 ## 后续条目约定
 

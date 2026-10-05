@@ -73,7 +73,7 @@ SQLite 使用 WAL；每个数据库绑定一个规范化项目路径。`sessions
 
 已验证 Windows 上的 Codex `0.160.0` 本地桌面会话，以及人工构造的兼容性与故障样例；详情见 [测试记录](testing.md)。本轮真实样本中 `ImageView` 和原生 `ContextCompaction` 仍按未知记录保留，未自动解释其内容。已完成一轮 [OCR 委托自查](ocr-review.md)，确认的 5 项缺陷均已修复并增加回归测试。
 
-已推送并建立 [草稿 PR #1](https://github.com/cn7shi/Demine/pull/1)。首次云端 Linux Rust 与 Chromium 浏览器检查通过，Windows 暴露了缺失历史子目录的路径归属问题；已修复并补回归，本地 27 项 Rust 测试通过，修复后的云端结果见 [测试记录](testing.md)。Linux 覆盖人工构造案例，尚无该平台真实 Codex 会话接入证据。
+已推送并建立 [草稿 PR #1](https://github.com/cn7shi/Demine/pull/1)。首次云端 Windows 检查暴露的缺失历史子目录路径问题已修复并补回归；修复提交 `6a72ae2` 的 Windows/Linux 各 27 项 Rust 测试、Linux Chromium 6 项浏览器测试及其余 CI 检查全部通过，见 [测试记录](testing.md)。Linux 覆盖人工构造案例，尚无该平台真实 Codex 会话接入证据。
 
 当前限制：
 
