@@ -1,0 +1,17 @@
+{
+  "name": "demine-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write web/src web/public/index.html web/public/style.css scripts tests/browser playwright.config.ts",
+    "format:check": "prettier --check web/src web/public/index.html web/public/style.css scripts tests/browser playwright.config.ts",
+    "typecheck": "tsc --noEmit",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "prettier": "^3.9.9",
+    "typescript": "^5.9.0"
+  }
+}
