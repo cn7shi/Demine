@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demine · 看见过程，留下经验</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="Demine 首页"
+        ><span class="brand-icon">d.</span
+        ><span
+          >demine<span class="brand-caption">工程经历，从这里留下</span></span
+        ></a
+      >
+      <div class="workspace-label">当前项目</div>
+      <div class="project-box">
+        <span class="project-icon">↳</span>
+        <div>
+          <strong id="project-name">正在连接</strong>
+          <p id="project-path"></p>
+        </div>
+      </div>
+      <div class="session-heading">
+        <h2>工作记录</h2>
+        <span id="session-count" class="count">0</span>
+      </div>
+      <nav id="sessions" aria-label="选择会话">
+        <p class="sidebar-empty">等待第一段工作记录</p>
+      </nav>
+      <footer class="sidebar-footer">
+        <span class="local-dot"></span> 记录保存在本机
+        <span class="version">M0 / M1</span>
+        <p>任务会结束，走过的路可以留下。</p>
+      </footer>
+    </aside>
+    <main>
+      <header class="topbar">
+        <span>你的工程现场 <span class="slash">/</span> 过程回放</span>
+        <div class="connection">
+          <span id="connection-dot" class="status-dot"></span
+          ><span id="connection" role="status">正在连接</span
+          ><button id="refresh" class="quiet-button" type="button">刷新</button>
+        </div>
+      </header>
+      <section class="overview">
+        <div class="eyebrow">OBSERVE · UNDERSTAND · REMEMBER</div>
+        <h1>看见结果背后的过程。</h1>
+        <p class="intro">把被一句“完成了”带过的尝试与反馈，重新展开。</p>
+        <div class="stats">
+          <div>
+            <strong id="stat-events">0</strong><span>条执行与交流记录</span>
+          </div>
+          <div>
+            <strong id="stat-failures">0</strong><span>次明确执行失败</span>
+          </div>
+          <div>
+            <strong id="stat-unknown">0</strong><span>条待识别记录</span>
+          </div>
+          <div class="scope-note">
+            当前呈现实际记录。<br />经验归纳与个人笔记将在后续加入。
+          </div>
+        </div>
+      </section>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div id="error" class="error" role="alert" hidden></div>
+      <section class="workbench">
+        <div class="timeline-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">SESSION TIMELINE</span>
+              <h2 id="session-title">等待项目里的第一段经历</h2>
+            </div>
+            <span id="event-count" class="muted"></span>
+          </div>
+          <div class="toolbar">
+            <div class="filters" role="group" aria-label="记录类型">
+              <button data-filter="all" class="active" aria-pressed="true">
+                全部</button
+              ><button data-filter="operations" aria-pressed="false">
+                操作</button
+              ><button data-filter="messages" aria-pressed="false">交流</button
+              ><button data-filter="attention" aria-pressed="false">
+                需留意
+              </button>
+            </div>
+            <label class="search-label"
+              ><span class="sr-only">搜索已加载记录</span
+              ><input id="search" type="search" placeholder="搜索已加载记录"
+            /></label>
+          </div>
+          <div class="timeline-options">
+            <label
+              ><input id="show-transport" type="checkbox" />
+              显示底层工具编排</label
+            ><span>执行结束 ≠ 问题已验证解决</span>
+          </div>
+          <button id="older" class="older-button" hidden>加载更早的记录</button>
+          <div id="timeline" class="timeline">
+            <div class="empty-state">
+              <div class="empty-symbol">↗</div>
+              <h3>照常开始你的工作</h3>
+              <p>
+                在这个项目中使用 Codex，记录会自动出现在这里。<br />无需导出或复制对话。
+              </p>
+            </div>
+          </div>
+        </div>
+        <aside id="evidence-panel" class="evidence-panel" aria-label="原始证据">
+          <div class="evidence-heading">
+            <div>
+              <span class="eyebrow">SOURCE EVIDENCE</span>
+              <h2>每一步，都有出处。</h2>
+            </div>
+            <button
+              id="close-evidence"
+              class="quiet-button"
+              hidden
+              aria-label="关闭证据"
+            >
+              关闭
+            </button>
+          </div>
+          <div id="evidence">
+            <div class="evidence-empty">
+              <span>◈</span>
+              <p>选择一条记录<br />查看它对应的原始证据。</p>
+              <small
+                >这里只解释已观察到的动作，<br />不会推断 Agent
+                未公开的思考。</small
+              >
+            </div>
+          </div>
+        </aside>
+      </section>
+      <footer class="main-footer">
+        DEMINE <span>捕获经历 · 保留证据 · 理解由你完成</span
+        ><span id="updated"></span>
+      </footer>
+    </main>
+  </body>
+</html>
